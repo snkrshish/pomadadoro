@@ -12,6 +12,8 @@
 		441BB9322AB2D2BC00034C40 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BB9312AB2D2BC00034C40 /* ViewController.swift */; };
 		441BB9372AB2D2BC00034C40 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 441BB9362AB2D2BC00034C40 /* Assets.xcassets */; };
 		441BB93A2AB2D2BC00034C40 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 441BB9382AB2D2BC00034C40 /* LaunchScreen.storyboard */; };
+		441BB9492AB2DCBD00034C40 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 441BB9482AB2DCBD00034C40 /* SnapKit */; };
+		441BB94B2AB4DC4800034C40 /* CircularProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441BB94A2AB4DC4800034C40 /* CircularProgressBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,7 @@
 		441BB9362AB2D2BC00034C40 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		441BB9392AB2D2BC00034C40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		441BB93B2AB2D2BC00034C40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		441BB94A2AB4DC4800034C40 /* CircularProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				441BB9492AB2DCBD00034C40 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +67,7 @@
 		441BB9412AB2D2D000034C40 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				441BB94A2AB4DC4800034C40 /* CircularProgressBarView.swift */,
 				441BB9312AB2D2BC00034C40 /* ViewController.swift */,
 				441BB9442AB2D78000034C40 /* App */,
 				441BB9432AB2D77000034C40 /* Storyboards */,
@@ -120,6 +125,9 @@
 			dependencies = (
 			);
 			name = pomadadoro;
+			packageProductDependencies = (
+				441BB9482AB2DCBD00034C40 /* SnapKit */,
+			);
 			productName = pomadadoro;
 			productReference = 441BB92A2AB2D2BC00034C40 /* pomadadoro.app */;
 			productType = "com.apple.product-type.application";
@@ -148,6 +156,9 @@
 				Base,
 			);
 			mainGroup = 441BB9212AB2D2BB00034C40;
+			packageReferences = (
+				441BB9472AB2DCBD00034C40 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 441BB92B2AB2D2BC00034C40 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -175,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				441BB9322AB2D2BC00034C40 /* ViewController.swift in Sources */,
+				441BB94B2AB4DC4800034C40 /* CircularProgressBarView.swift in Sources */,
 				441BB92E2AB2D2BC00034C40 /* AppDelegate.swift in Sources */,
 				441BB9302AB2D2BC00034C40 /* SceneDelegate.swift in Sources */,
 			);
@@ -384,6 +396,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		441BB9472AB2DCBD00034C40 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		441BB9482AB2DCBD00034C40 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 441BB9472AB2DCBD00034C40 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 441BB9222AB2D2BB00034C40 /* Project object */;
 }

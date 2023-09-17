@@ -2,13 +2,25 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
+
+    //MARK: - progressBar
+
+    private var circleLayer = CAShapeLayer()
+    private var progressLayer = CAShapeLayer()
+
+    private var startPoint = CGFloat(-Double.pi / 2)
+    private var endPoint = CGFloat(3 * Double.pi / 2)
+
     //MARK: - Timer
     private var timer = Timer()
-    private var time = 10 //время в секундах
+    private var time = 0 //время в секундах
+    private var workTime = 10 // время работы
+    private var chillTime = 5 // время отдыха
     private var isWorkTimer = true
     private var isStarted = false
 
     //MARK: - Outlets
+
 
     private lazy var statusLabel: UILabel = {
         let label = UILabel()
@@ -43,7 +55,9 @@ class ViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        time = workTime
         view.backgroundColor = .white
+        createCircularPath()
         setupHierarchy()
         setupAutolayout()
     }
@@ -54,7 +68,6 @@ class ViewController: UIViewController {
         view.addSubview(timerLabel)
         view.addSubview(timerButtom)
         view.addSubview(statusLabel)
-
     }
 
     private func setupAutolayout() {
@@ -84,6 +97,7 @@ class ViewController: UIViewController {
     }
     //MARK: - Action
     @objc private func buttonPressed() {
+        basicAnimation(duration: TimeInterval(time))
         timerButtom.isEnabled = true
         if isWorkTimer{
 
@@ -117,8 +131,9 @@ class ViewController: UIViewController {
                 time -= 1
                 timerLabel.text = formatText()
             } else {
-                time = 5
+                time = chillTime
                 statusLabel.text = "Отдыхаем"
+                circleLayer.strokeColor = UIColor.red.cgColor
                 statusLabel.textColor = .red
                 timerLabel.text = formatText()
                 timer.invalidate()
@@ -133,8 +148,9 @@ class ViewController: UIViewController {
                 time -= 1
                 timerLabel.text = formatText()
             } else {
-                time = 10
+                time = workTime
                 statusLabel.text = "Работаем"
+                circleLayer.strokeColor = UIColor.green.cgColor
                 statusLabel.textColor = .green
                 timerLabel.text = formatText()
                 timer.invalidate()
@@ -150,6 +166,41 @@ class ViewController: UIViewController {
         let minute = Int(time) / 60 % 60
         let seconds = Int(time) % 60
         return String(format: "%02i:%02i", minute, seconds)
+    }
+
+    //MARK: - ProgressBar Function
+    private func createCircularPath() {
+
+        let circularPath = UIBezierPath(arcCenter: CGPoint(x: view.frame.size.width / 2.0, y: view.frame.size.height / 2.0), radius: 130,
+                                        startAngle: startPoint,
+                                        endAngle: endPoint,
+                                        clockwise: true)
+        circleLayer.path = circularPath.cgPath
+        circleLayer.fillColor = UIColor.clear.cgColor
+        circleLayer.lineCap = .round
+        circleLayer.lineWidth = 15.0
+        circleLayer.strokeEnd = 1
+        circleLayer.strokeColor = UIColor.green.cgColor
+        view.layer.addSublayer(circleLayer)
+
+        progressLayer.path = circularPath.cgPath
+        progressLayer.fillColor = UIColor.clear.cgColor
+        progressLayer.lineCap = .round
+        progressLayer.lineWidth = 10.0
+        progressLayer.strokeEnd = 0
+        progressLayer.strokeColor = UIColor.black.cgColor
+        view.layer.addSublayer(progressLayer)
+    }
+
+    private func basicAnimation(duration: TimeInterval) {
+
+        let circularProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        
+        circularProgressAnimation.duration = duration
+        circularProgressAnimation.toValue = 1.0
+        circularProgressAnimation.fillMode = .forwards
+        circularProgressAnimation.isRemovedOnCompletion = false
+        progressLayer.add(circularProgressAnimation, forKey: "basicAnimation")
     }
 }
 

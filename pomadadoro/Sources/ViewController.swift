@@ -97,25 +97,35 @@ class ViewController: UIViewController {
     }
     //MARK: - Action
     @objc private func buttonPressed() {
-        basicAnimation(duration: TimeInterval(time))
         timerButtom.isEnabled = true
         if isWorkTimer{
-
             if !isStarted {
+                if progressLayer.timeOffset == 0 {
+                    basicAnimation(duration: TimeInterval(time))
+                } else {
+                    resumeAnimation(layer: progressLayer)
+                }
                 timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timerMethod), userInfo: nil, repeats: true)
                 isStarted = true
                 timerButtom.setImage(UIImage(systemName: "pause"), for: .normal)
             } else {
+                pauseAnimation(layer: progressLayer)
                 timer.invalidate()
                 isStarted = false
                 timerButtom.setImage(UIImage(systemName: "play"), for: .normal)
             }
         } else {
             if !isStarted {
+                if progressLayer.timeOffset == 0 {
+                    basicAnimation(duration: TimeInterval(time))
+                } else {
+                    resumeAnimation(layer: progressLayer)
+                }
                 timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timerMethod), userInfo: nil, repeats: true)
                 isStarted = true
                 timerButtom.setImage(UIImage(systemName: "pause"), for: .normal)
             } else {
+                pauseAnimation(layer: progressLayer)
                 timer.invalidate()
                 isStarted = false
                 timerButtom.setImage(UIImage(systemName: "play"), for: .normal)
@@ -124,29 +134,28 @@ class ViewController: UIViewController {
         }
     }
     @objc private func timerMethod() {
-
-        if isWorkTimer {
-            if time > 0 {
+        if time > 1 {
+            if isWorkTimer {
                 timerButtom.setImage(UIImage(systemName: "pause"), for: .normal)
                 time -= 1
                 timerLabel.text = formatText()
             } else {
+                timerButtom.setImage(UIImage(systemName: "pause"), for: .normal)
+                time -= 1
+                timerLabel.text = formatText()
+            }
+        } else {
+            if isWorkTimer {
+                timer.invalidate()
                 time = chillTime
                 statusLabel.text = "Отдыхаем"
                 circleLayer.strokeColor = UIColor.red.cgColor
                 statusLabel.textColor = .red
                 timerLabel.text = formatText()
-                timer.invalidate()
                 timerButtom.setImage(UIImage(systemName: "play"), for: .normal)
                 timerButtom.imageView?.tintColor = .red
                 isWorkTimer = false
                 isStarted = false
-            }
-        } else {
-            if time > 0 {
-                timerButtom.setImage(UIImage(systemName: "pause"), for: .normal)
-                time -= 1
-                timerLabel.text = formatText()
             } else {
                 time = workTime
                 statusLabel.text = "Работаем"
@@ -189,18 +198,33 @@ class ViewController: UIViewController {
         progressLayer.lineWidth = 10.0
         progressLayer.strokeEnd = 0
         progressLayer.strokeColor = UIColor.black.cgColor
+        progressLayer.speed = 1
         view.layer.addSublayer(progressLayer)
     }
 
     private func basicAnimation(duration: TimeInterval) {
 
         let circularProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        
         circularProgressAnimation.duration = duration
         circularProgressAnimation.toValue = 1.0
         circularProgressAnimation.fillMode = .forwards
         circularProgressAnimation.isRemovedOnCompletion = false
         progressLayer.add(circularProgressAnimation, forKey: "basicAnimation")
+    }
+
+    private func pauseAnimation(layer : CALayer){
+        let pausedTime : CFTimeInterval = layer.convertTime(CACurrentMediaTime(), from: nil)
+        layer.speed = 0.0
+        layer.timeOffset = pausedTime
+    }
+
+    private func resumeAnimation(layer : CALayer){
+        let pausedTime = layer.convertTime(CACurrentMediaTime(), from: nil)
+        layer.speed = 1
+        layer.timeOffset = 0.0
+        layer.beginTime = 0.0
+        let timeSincePause = layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        layer.beginTime = timeSincePause
     }
 }
 

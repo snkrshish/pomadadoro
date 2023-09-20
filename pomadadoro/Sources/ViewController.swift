@@ -13,6 +13,7 @@ class ViewController: UIViewController {
 
     //MARK: - Timer
     private var timer = Timer()
+    private var accurateTime = 1000
     private var time = 0 //время в секундах
     private var workTime = 10 // время работы
     private var chillTime = 5 // время отдыха
@@ -105,7 +106,7 @@ class ViewController: UIViewController {
                 } else {
                     resumeAnimation(layer: progressLayer)
                 }
-                timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timerMethod), userInfo: nil, repeats: true)
+                timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerMethod), userInfo: nil, repeats: true)
                 isStarted = true
                 timerButtom.setImage(UIImage(systemName: "pause"), for: .normal)
             } else {
@@ -118,10 +119,12 @@ class ViewController: UIViewController {
             if !isStarted {
                 if progressLayer.timeOffset == 0 {
                     basicAnimation(duration: TimeInterval(time))
-                } else {
+                } else
+
+                {
                     resumeAnimation(layer: progressLayer)
                 }
-                timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timerMethod), userInfo: nil, repeats: true)
+                timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerMethod), userInfo: nil, repeats: true)
                 isStarted = true
                 timerButtom.setImage(UIImage(systemName: "pause"), for: .normal)
             } else {
@@ -134,6 +137,12 @@ class ViewController: UIViewController {
         }
     }
     @objc private func timerMethod() {
+        if accurateTime > 0 {
+            accurateTime -= 1
+            return
+        }
+        accurateTime = 1000
+
         if time > 1 {
             if isWorkTimer {
                 timerButtom.setImage(UIImage(systemName: "pause"), for: .normal)
